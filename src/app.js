@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
+const { CLIENT_ORIGIN } = require("./config");
+const jsonBodyParser = express.json();
 
 const app = express();
 
@@ -19,6 +21,11 @@ app.use(helmet());
 
 app.get("/api/*", (req, res) => {
   res.json({ ok: true });
+});
+
+app.post("/api/auth/login", jsonBodyParser, (req, res) => {
+  const username = req.body.username;
+  console.log("username", username);
 });
 
 app.use(function errorHandler(error, req, res, next) {
