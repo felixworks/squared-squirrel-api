@@ -29,7 +29,7 @@ app.get("/api/users", (req, res, next) => {
     .catch(next);
 });
 
-app.get("/api/users/selected", (req, res) => {
+app.get("/api/users/single", (req, res) => {
   console.log("req.query", req.query);
   UsersService.getById(req.app.get("db"), req.query.user_id).then(user => {
     console.log("user", user);
