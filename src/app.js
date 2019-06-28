@@ -66,10 +66,31 @@ app.post("/api/users", jsonBodyParser, (req, res, next) => {
 
   newUser = { username: `${newUser}` };
 
-  UsersService.insertUser(req.app.get("db"), newUser)
-    .then(user => {
-      res.status(201).json(UsersService.serializeUser(user));
+  // checks whether the username already exists and returns the entry if it does
+  UsersService.getAllUsers(req.app.get("db"))
+    .then(users => {
+      let userAlreadyExists = false;
+      users.map(user => {
+        if (newUser.username === user.username) {
+          console.log("we have a match");
+          userAlreadyExists = true;
+        }
+      });
+      return userAlreadyExists;
     })
+    .then(userAlreadyExists => {
+      console.log("userAlreadyExists", userAlreadyExists);
+      if (!userAlreadyExists) {
+        console.log("is this code running");
+        UsersService.insertUser(req.app.get("db"), newUser).then(user => {
+          res.status(201).json(UsersService.serializeUser(user));
+        });
+      }
+      // else {
+      //   res.json(UsersService.serializeUser(user));
+      // }
+    })
+
     .catch(next);
 });
 
