@@ -50,7 +50,6 @@ app.patch("/api/users/single", jsonBodyParser, (req, res, next) => {
   UsersService.updateUserInformation(req.app.get("db"), userToUpdate)
     .then(user => {
       console.log("user after UpdateUser() call", user);
-
       res.status(201).json(user);
     })
 

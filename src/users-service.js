@@ -50,14 +50,38 @@ const UsersService = {
 
   updateUserInformation(db, userToUpdate) {
     const lowestTimeWin = userToUpdate.lowestTimeWin;
-    return UsersService.getByUsername(db, userToUpdate.username).then(user => {
-      console.log(user);
-      return db
-        .from("squared_squirrel_users_statistics")
-        .where({ user_id: user.id })
-        .update({ lowest_time_win: lowestTimeWin })
-        .returning("*");
-    });
+    return UsersService.getByUsername(db, userToUpdate.username)
+      .then(user => {
+        console.log(user);
+        return db
+          .from("squared_squirrel_users_statistics")
+          .where({ user_id: user.id })
+          .update({ lowest_time_win: lowestTimeWin })
+          .returning("*")
+          .then(([user]) => user);
+      })
+      .then(user => {
+        console.log("user inside second then", user);
+        if (userToUpdate.incrementGamesPlayed) {
+          return db
+            .from("squared_squirrel_users_statistics")
+            .where({ user_id: user.id })
+            .increment("games_played")
+            .returning("*")
+            .then(([user]) => user);
+        }
+      })
+      .then(user => {
+        console.log("user inside second then", user);
+        if (userToUpdate.incrementGamesPlayed) {
+          return db
+            .from("squared_squirrel_users_statistics")
+            .where({ user_id: user.id })
+            .increment("games_won")
+            .returning("*")
+            .then(([user]) => user);
+        }
+      });
   },
 
   deleteUser(db, userToDelete) {
