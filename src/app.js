@@ -85,10 +85,17 @@ app.post("/api/users", jsonBodyParser, (req, res, next) => {
         UsersService.insertUser(req.app.get("db"), newUser).then(user => {
           res.status(201).json(UsersService.serializeUser(user));
         });
+      } else {
+        UsersService.getByUsername(req.app.get("db"), newUser.username).then(
+          user => {
+            console.log("user", user);
+            res.status(200).json({
+              error: "Username already exists.",
+              userInfo: UsersService.serializeUser(user)
+            });
+          }
+        );
       }
-      // else {
-      //   res.json(UsersService.serializeUser(user));
-      // }
     })
 
     .catch(next);
