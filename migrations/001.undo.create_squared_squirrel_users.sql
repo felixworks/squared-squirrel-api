@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS squared_squirrel_users;
+DROP TABLE IF EXISTS squared_squirrel_users CASCADE;

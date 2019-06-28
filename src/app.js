@@ -20,6 +20,7 @@ app.use(
 );
 app.use(helmet());
 
+// get all users
 app.get("/api/users", (req, res, next) => {
   UsersService.getAllUsers(req.app.get("db"))
     .then(users => {
@@ -29,14 +30,34 @@ app.get("/api/users", (req, res, next) => {
     .catch(next);
 });
 
-app.get("/api/users/single", (req, res) => {
-  console.log("req.query", req.query);
-  UsersService.getById(req.app.get("db"), req.query.user_id).then(user => {
+// get single user
+app.get("/api/users/single", jsonBodyParser, (req, res) => {
+  const requestedUser = req.body.username;
+  UsersService.getByUsername(req.app.get("db"), requestedUser).then(user => {
     console.log("user", user);
     res.json(UsersService.serializeUser(user));
   });
 });
 
+// update user information
+app.patch("/api/users/single", jsonBodyParser, (req, res, next) => {
+  let userToUpdate = req.body;
+  if (userToUpdate == null) {
+    return res.status(400).json({ error: `Missing username in body` });
+  }
+
+  console.log("userToUpdate", userToUpdate);
+  UsersService.updateUserInformation(req.app.get("db"), userToUpdate)
+    .then(user => {
+      console.log("user after UpdateUser() call", user);
+
+      res.status(201).json(user);
+    })
+
+    .catch(next);
+});
+
+// register new user
 app.post("/api/users", jsonBodyParser, (req, res, next) => {
   let newUser = req.body.username;
   console.log("username", newUser);
@@ -53,6 +74,7 @@ app.post("/api/users", jsonBodyParser, (req, res, next) => {
     .catch(next);
 });
 
+// delete user
 app.delete("/api/users", jsonBodyParser, (req, res) => {
   let userToDelete = req.body.username;
   console.log("username", userToDelete);

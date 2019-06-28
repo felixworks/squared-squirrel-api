@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS squared_squirrel_user_statistics;
