@@ -31,12 +31,14 @@ app.get("/api/users", (req, res, next) => {
 });
 
 // get single user
-app.get("/api/users/single", jsonBodyParser, (req, res) => {
+app.get("/api/users/single", jsonBodyParser, (req, res, next) => {
   const requestedUser = req.body.username;
-  UsersService.getByUsername(req.app.get("db"), requestedUser).then(user => {
-    console.log("user", user);
-    res.json(UsersService.serializeUser(user));
-  });
+  UsersService.getByUsername(req.app.get("db"), requestedUser)
+    .then(user => {
+      console.log("user", user);
+      res.json(UsersService.serializeUser(user));
+    })
+    .catch(next);
 });
 
 // update user information
@@ -102,17 +104,19 @@ app.post("/api/users", jsonBodyParser, (req, res, next) => {
 });
 
 // delete user
-app.delete("/api/users", jsonBodyParser, (req, res) => {
+app.delete("/api/users", jsonBodyParser, (req, res, next) => {
   let userToDelete = req.body.username;
   console.log("username", userToDelete);
   if (userToDelete == null) {
     return res.status(400).json({ error: `Missing username in body` });
   }
 
-  UsersService.deleteUser(req.app.get("db"), userToDelete).then(user => {
-    console.log("deleted user:", userToDelete);
-    res.status(200).json({ message: `${userToDelete} was deleted.` });
-  });
+  UsersService.deleteUser(req.app.get("db"), userToDelete)
+    .then(user => {
+      console.log("deleted user:", userToDelete);
+      res.status(200).json({ message: `${userToDelete} was deleted.` });
+    })
+    .catch(next);
 });
 
 app.use(function errorHandler(error, req, res, next) {
