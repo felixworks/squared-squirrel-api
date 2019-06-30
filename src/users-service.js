@@ -61,7 +61,7 @@ const UsersService = {
 
   updateUserInformation(db, userToUpdate) {
     const lowestTimeWin = userToUpdate.lowestTimeWin;
-    return UsersService.getByUsername(db, userToUpdate.username)
+    return UsersService.getById(db, userToUpdate.id)
       .then(user => {
         console.log(user);
         return db

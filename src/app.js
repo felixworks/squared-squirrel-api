@@ -55,7 +55,7 @@ app.get("/api/users/single/statistics", (req, res, next) => {
 
 // update user information
 app.patch("/api/users/single", jsonBodyParser, (req, res, next) => {
-  let userToUpdate = req.body;
+  let userToUpdate = req.body.userStatistics;
   if (userToUpdate == null) {
     return res.status(400).json({ error: `Missing username in body` });
   }
