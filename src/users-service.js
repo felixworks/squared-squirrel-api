@@ -84,7 +84,7 @@ const UsersService = {
       })
       .then(user => {
         console.log("user inside second then", user);
-        if (userToUpdate.incrementGamesPlayed) {
+        if (userToUpdate.incrementGamesWon) {
           return db
             .from("squared_squirrel_users_statistics")
             .where({ user_id: user.id })
@@ -92,6 +92,7 @@ const UsersService = {
             .returning("*")
             .then(([user]) => user);
         }
+        return user;
       });
   },
 
