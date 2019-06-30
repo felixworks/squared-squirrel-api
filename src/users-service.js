@@ -21,6 +21,17 @@ const UsersService = {
       .first();
   },
 
+  getUserStatistics(db, requestedUsername) {
+    console.log("username (from statistics)", requestedUsername);
+    return UsersService.getByUsername(db, requestedUsername).then(user => {
+      return db
+        .from("squared_squirrel_users_statistics")
+        .where({ user_id: user.id })
+        .select("id", "user_id", "games_played", "games_won", "lowest_time_win")
+        .then(([user]) => user);
+    });
+  },
+
   serializeUser(user) {
     return {
       id: user.id,

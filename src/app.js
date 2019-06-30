@@ -31,12 +31,24 @@ app.get("/api/users", (req, res, next) => {
 });
 
 // get single user
-app.get("/api/users/single", jsonBodyParser, (req, res, next) => {
-  const requestedUser = req.body.username;
+app.get("/api/users/single", (req, res, next) => {
+  const requestedUser = req.query.username;
+  console.log("requestedUser", requestedUser);
   UsersService.getByUsername(req.app.get("db"), requestedUser)
     .then(user => {
       console.log("user", user);
       res.json(UsersService.serializeUser(user));
+    })
+    .catch(next);
+});
+
+// get single user statistics
+app.get("/api/users/single/statistics", (req, res, next) => {
+  const requestedUser = req.query.username;
+  UsersService.getUserStatistics(req.app.get("db"), requestedUser)
+    .then(user => {
+      console.log("user", user);
+      res.json(user);
     })
     .catch(next);
 });
@@ -88,11 +100,11 @@ app.post("/api/users", jsonBodyParser, (req, res, next) => {
           res.status(201).json(UsersService.serializeUser(user));
         });
       } else {
+        // if user already exists, just return the requested user then
         UsersService.getByUsername(req.app.get("db"), newUser.username).then(
           user => {
             console.log("user", user);
             res.status(200).json({
-              error: "Username already exists.",
               userInfo: UsersService.serializeUser(user)
             });
           }
