@@ -8,21 +8,18 @@ const UsersService = {
   },
 
   getById(db, requestedId) {
-    console.log("id", requestedId);
     return UsersService.getAllUsers(db)
       .where({ id: requestedId })
       .first();
   },
 
   getByUsername(db, requestedUsername) {
-    console.log("username", requestedUsername);
     return UsersService.getAllUsers(db)
       .where({ username: requestedUsername })
       .first();
   },
 
   getUserStatistics(db, requestedUsername) {
-    console.log("username (from statistics)", requestedUsername);
     return UsersService.getByUsername(db, requestedUsername).then(user => {
       return db
         .from("squared_squirrel_users_statistics")
@@ -41,7 +38,6 @@ const UsersService = {
   },
 
   insertUserStatistics(db, user) {
-    console.log(user);
     return db
       .insert({ user_id: user.id })
       .into("squared_squirrel_users_statistics")
@@ -59,11 +55,11 @@ const UsersService = {
       .then(user => UsersService.getById(db, user.id));
   },
 
+  // Function needs to change up to three values. lowestTimeWin can change to any integer value, but game_played and games_won should only ever increment the current value. I separated it out into three updates just so I can check whether the value needs to be updated.
   updateUserStatistics(db, userToUpdate) {
     const lowestTimeWin = userToUpdate.lowestTimeWin;
     return UsersService.getById(db, userToUpdate.id)
       .then(user => {
-        console.log(user);
         return db
           .from("squared_squirrel_users_statistics")
           .where({ user_id: user.id })
@@ -72,7 +68,6 @@ const UsersService = {
           .then(([user]) => user);
       })
       .then(user => {
-        console.log("user inside second then", user);
         if (userToUpdate.incrementGamesPlayed) {
           return db
             .from("squared_squirrel_users_statistics")
@@ -83,7 +78,6 @@ const UsersService = {
         }
       })
       .then(user => {
-        console.log("user inside second then", user);
         if (userToUpdate.incrementGamesWon) {
           return db
             .from("squared_squirrel_users_statistics")

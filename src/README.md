@@ -4,6 +4,10 @@ Link to live app: https://squared-squirrel-app.felixworks.now.sh/
 
 Link to client repo designed to use this API: https://github.com/felixworks/squared-squirrel-app
 
+## Technology used
+
+Express, PostgreSQL, Knex
+
 ## Specific information about API
 
 ### Show all users
