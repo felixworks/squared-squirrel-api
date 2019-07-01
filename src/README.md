@@ -1,26 +1,102 @@
-# Express Boilerplate!
+# Squared Squirrel API
 
-This is a boilerplate project used for starting new projects!
+Link to live app: https://squared-squirrel-app.felixworks.now.sh/
 
-## Set up
+Link to client repo designed to use this API: https://github.com/felixworks/squared-squirrel-app
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## Specific information about API
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+### Show all users
 
-## Scripts
+#### URL
 
-Start the application `npm start`
+/api/users
 
-Start nodemon for the application `npm run dev`
+#### Method
 
-Run the tests `npm test`
+    GET
 
-## Deploying
+#### URL params
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+None
+
+#### Data params
+
+None
+
+### Show one user
+
+#### URL
+
+/api/users/single
+
+#### Method
+
+    GET
+
+#### URL params
+
+    username=[string]
+
+#### Data params
+
+None
+
+### Register one user
+
+#### URL
+
+/api/users
+
+#### Method
+
+    POST
+
+#### URL params
+
+None
+
+#### Data params
+
+    {"username": "test"}
+
+### Update user statistics
+
+#### URL
+
+/api/users/single
+
+#### Method
+
+    PATCH
+
+#### URL params
+
+None
+
+#### Data params
+
+    {"userStatistics":
+        {"id": "2",
+        "incrementGamesPlayed": "true",
+        "incrementGamesWon": "true",
+        "lowestTimeWin": "26"}
+    }
+
+### Delete single user
+
+#### URL
+
+/api/users
+
+#### Method
+
+    DELETE
+
+#### URL params
+
+None
+
+#### Data params
+
+    {"username": "test"}

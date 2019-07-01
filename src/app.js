@@ -53,7 +53,7 @@ app.get("/api/users/single/statistics", (req, res, next) => {
     .catch(next);
 });
 
-// update user information
+// update user statistics
 app.patch("/api/users/single", jsonBodyParser, (req, res, next) => {
   let userToUpdate = req.body.userStatistics;
   if (userToUpdate == null) {
@@ -61,7 +61,7 @@ app.patch("/api/users/single", jsonBodyParser, (req, res, next) => {
   }
 
   console.log("userToUpdate", userToUpdate);
-  UsersService.updateUserInformation(req.app.get("db"), userToUpdate)
+  UsersService.updateUserStatistics(req.app.get("db"), userToUpdate)
     .then(user => {
       console.log("user after UpdateUser() call", user);
       res.status(201).json(user);

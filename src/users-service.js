@@ -59,7 +59,7 @@ const UsersService = {
       .then(user => UsersService.getById(db, user.id));
   },
 
-  updateUserInformation(db, userToUpdate) {
+  updateUserStatistics(db, userToUpdate) {
     const lowestTimeWin = userToUpdate.lowestTimeWin;
     return UsersService.getById(db, userToUpdate.id)
       .then(user => {
